@@ -1,4 +1,4 @@
-let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let allTasks = /*JSON.parse(localStorage.getItem('tasks')) ||*/ [];
 let valueName = '';
 let valueInput = '';
 let inputText = null;
@@ -14,7 +14,7 @@ window.onload = function init () {
 
 const delAllTasks = () => {
 	allTasks = [];
-	localStorage.setItem('tasks', JSON.stringify(allTasks));
+	//localStorage.setItem('tasks', JSON.stringify(allTasks));
 	inputText.value = '';
 	inputName.value = '';
 	render();
@@ -28,11 +28,14 @@ const onClickButton = () => {
 			isCheck: false,
 			editor: false
 		});
+
+		const resp = await 
+
 		valueInput = '';
 		valueName = '';
 		inputText.value = '';
 		inputName.value = '';
-		localStorage.setItem('tasks', JSON.stringify(allTasks))
+		//localStorage.setItem('tasks', JSON.stringify(allTasks))
 		render(); 
 	} else {
 		alert('Поле \"Задача\" пустое!!!');
@@ -135,19 +138,19 @@ const render = () => {
 
 const onChangeCheckbox = (index) => {
 	allTasks[index].isCheck = !allTasks[index].isCheck;
-	localStorage.setItem('tasks', JSON.stringify(allTasks))
+	//localStorage.setItem('tasks', JSON.stringify(allTasks))
 	render();
 }
 
 const delTask = (index) => {
 	delete allTasks[index];
-	localStorage.setItem('tasks', JSON.stringify(allTasks))
+	//localStorage.setItem('tasks', JSON.stringify(allTasks))
 	render();
 }
 
 const openEditor = (index) => {
 	allTasks[index].editor = !allTasks[index].editor;
-	localStorage.setItem('tasks', JSON.stringify(allTasks))
+	//localStorage.setItem('tasks', JSON.stringify(allTasks))
 	render();
 }
 
@@ -159,7 +162,7 @@ const changeTask = (index) => {
 	allTasks[index].name = valueName;
 	allTasks[index].text = valueInput;
 	allTasks[index].editor = !allTasks[index].editor;
-	localStorage.setItem('tasks', JSON.stringify(allTasks))
+	//localStorage.setItem('tasks', JSON.stringify(allTasks))
 	valueInput = '';
 	valueName = '';
 	render();
