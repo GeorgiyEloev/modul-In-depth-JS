@@ -20,7 +20,7 @@ const delAllTasks = () => {
 	render();
 }
 
-const onClickButton = () => {
+const onClickButton = async () => {
 	if (valueName) {
 		allTasks.push({
 			name: valueName,
@@ -29,7 +29,21 @@ const onClickButton = () => {
 			editor: false
 		});
 
-		const resp = await 
+		const resp = await fetch('http://localhost:8000/createTask', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8',
+				'Access-Control-Allow-Origin': '*'
+			},
+			body: JSON.stringify({
+				name: valueName,
+				text: valueInput,
+				isCheck: false
+			})
+		});
+
+		let result = await resp.json();
+		console.log(result);
 
 		valueInput = '';
 		valueName = '';
