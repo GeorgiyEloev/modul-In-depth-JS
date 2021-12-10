@@ -4,7 +4,7 @@ let valueInput = '';
 let inputText = null;
 let inputName = null;
 
-window.onload = async function init () {
+window.onload = async () => {
 	inputText = document.getElementById('add-task');
 	inputText.addEventListener('change', updateValue);
 	inputName = document.getElementById('add-name');
@@ -71,8 +71,8 @@ const render = () => {
 		content.removeChild(content.firstChild);
 	}
 	allTasks.map((item, index) => {
+		const {name, text, isCheck, id , editor} = item;
 		if(!item.editor && item) {
-			const {name, text, isCheck, id , editor} = item;
 			const container = document.createElement('div');
 			container.id = `task-${index}`;
 			const nameh2 = document.createElement('h2');
@@ -109,8 +109,7 @@ const render = () => {
 			container.appendChild(textP);
 			container.appendChild(container2);
 			content.appendChild(container);
-		} else if(item) {
-			const {name, text, isCheck, id , editor} = item;
+		}else if(item) {
 			const container = document.createElement('div');
 			container.id = `task-${index}`;
 			container.className = 'page';
@@ -172,9 +171,9 @@ const openEditor = (index) => {
 
 const changeTask = (index) => {
 	let inputT = document.getElementById(`text${index}`);
-	updateValue1(inputT);
+	changeText(inputT);
 	let inputN = document.getElementById(`name${index}`);
-	updateName1(inputN);
+	changeName(inputN);
 	allTasks[index].name = valueName;
 	allTasks[index].text = valueInput;
 	allTasks[index].editor = !allTasks[index].editor;
@@ -184,15 +183,16 @@ const changeTask = (index) => {
 	render();
 }
 
-const updateValue1 = (d) => {
-	valueInput = d.value;
+const changeText = (text) => {
+	valueInput = text.value;
 }
 
-const updateName1 = (d) => {
-	valueName = d.value;
+const changeName = (name) => {
+	valueName = name.value;
 }
 
 const changeBD = async (index) => {
+	const {name, text, isCheck, id} = allTasks[index]
 	const resp = await fetch( 'http://localhost:8000/updateTask', {
 		method: 'PATCH',
 		headers: {
@@ -200,10 +200,10 @@ const changeBD = async (index) => {
 			'Access-Control-Allow-Origin': '*'
 		},
 		body: JSON.stringify({
-			name: allTasks[index].name,
-			text: allTasks[index].text,
-			isCheck: allTasks[index].isCheck,
-			id: allTasks[index].id
+			name: name,
+			text: text,
+			isCheck: isCheck,
+			id: id
 		})
 	});
 }
