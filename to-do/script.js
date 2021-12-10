@@ -1,20 +1,27 @@
-let allTasks = /*JSON.parse(localStorage.getItem('tasks')) ||*/ [];
+let allTasks = [];
 let valueName = '';
 let valueInput = '';
 let inputText = null;
 let inputName = null;
 
-window.onload = function init () {
+window.onload = async function init () {
 	inputText = document.getElementById('add-task');
 	inputText.addEventListener('change', updateValue);
 	inputName = document.getElementById('add-name');
 	inputName.addEventListener('change', updateName);
+	const resp = await fetch('http://localhost:8000/allTasks', {
+		method: 'GET'
+	});
+	let result = await resp.json();
+	allTasks = result.data;
+	for(let i in allTasks) {
+		allTasks[i].editor = false;
+	}
 	render();
 }
 
 const delAllTasks = () => {
 	allTasks = [];
-	//localStorage.setItem('tasks', JSON.stringify(allTasks));
 	inputText.value = '';
 	inputName.value = '';
 	render();
@@ -22,13 +29,6 @@ const delAllTasks = () => {
 
 const onClickButton = async () => {
 	if (valueName) {
-		allTasks.push({
-			name: valueName,
-			text: valueInput,
-			isCheck: false,
-			editor: false
-		});
-
 		const resp = await fetch('http://localhost:8000/createTask', {
 			method: 'POST',
 			headers: {
@@ -43,13 +43,14 @@ const onClickButton = async () => {
 		});
 
 		let result = await resp.json();
-		console.log(result);
-
+		allTasks = result.data;
+		for(let i in allTasks) {
+			allTasks[i].editor = false;
+		}
 		valueInput = '';
 		valueName = '';
 		inputText.value = '';
 		inputName.value = '';
-		//localStorage.setItem('tasks', JSON.stringify(allTasks))
 		render(); 
 	} else {
 		alert('Поле \"Задача\" пустое!!!');
@@ -71,7 +72,7 @@ const render = () => {
 	}
 	allTasks.map((item, index) => {
 		if(!item.editor && item) {
-			const {name, text, isCheck, editor} = item;
+			const {name, text, isCheck, id , editor} = item;
 			const container = document.createElement('div');
 			container.id = `task-${index}`;
 			const nameh2 = document.createElement('h2');
@@ -86,7 +87,7 @@ const render = () => {
 
 			const imgDel = document.createElement('img');
 			imgDel.src = 'delet.png';
-			imgDel.onclick = () => delTask(index);
+			imgDel.onclick = () => delTask(index, id);
 			const checkBox = document.createElement('input');
 			checkBox.type = 'checkbox';
 			checkBox.className = 'check';
@@ -109,7 +110,7 @@ const render = () => {
 			container.appendChild(container2);
 			content.appendChild(container);
 		} else if(item) {
-			const {name, text, isCheck, editor} = item;
+			const {name, text, isCheck, id , editor} = item;
 			const container = document.createElement('div');
 			container.id = `task-${index}`;
 			container.className = 'page';
@@ -150,21 +151,22 @@ const render = () => {
 	})
 }
 
-const onChangeCheckbox = (index) => {
+const onChangeCheckbox = async (index) => {
 	allTasks[index].isCheck = !allTasks[index].isCheck;
-	//localStorage.setItem('tasks', JSON.stringify(allTasks))
+	changeBD(index);
 	render();
 }
 
-const delTask = (index) => {
+const delTask = async (index, id) => {
 	delete allTasks[index];
-	//localStorage.setItem('tasks', JSON.stringify(allTasks))
+	const resp = await fetch(`http://localhost:8000/deleteTask?id=${id}`, {
+		method: 'DELETE'
+	});
 	render();
 }
 
 const openEditor = (index) => {
 	allTasks[index].editor = !allTasks[index].editor;
-	//localStorage.setItem('tasks', JSON.stringify(allTasks))
 	render();
 }
 
@@ -176,7 +178,7 @@ const changeTask = (index) => {
 	allTasks[index].name = valueName;
 	allTasks[index].text = valueInput;
 	allTasks[index].editor = !allTasks[index].editor;
-	//localStorage.setItem('tasks', JSON.stringify(allTasks))
+	changeBD(index);
 	valueInput = '';
 	valueName = '';
 	render();
@@ -188,4 +190,20 @@ const updateValue1 = (d) => {
 
 const updateName1 = (d) => {
 	valueName = d.value;
+}
+
+const changeBD = async (index) => {
+	const resp = await fetch( 'http://localhost:8000/updateTask', {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json;charset=utf-8',
+			'Access-Control-Allow-Origin': '*'
+		},
+		body: JSON.stringify({
+			name: allTasks[index].name,
+			text: allTasks[index].text,
+			isCheck: allTasks[index].isCheck,
+			id: allTasks[index].id
+		})
+	});
 }
