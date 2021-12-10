@@ -54,12 +54,13 @@ const render = () => {
 	}
 	allTasks.map((item, index) => {
 		if(!item.editor && item) {
+			const {name, text, isCheck, editor} = item;
 			const container = document.createElement('div');
 			container.id = `task-${index}`;
-			const name = document.createElement('h2');
-			name.innerText = `${index+1}. ${item.name}`;
-			const text = document.createElement('p');
-			text.innerText = item.text ? item.text : 'Описание отсутствует';
+			const nameh2 = document.createElement('h2');
+			nameh2.innerText = `${index+1}. ${name}`;
+			const textP = document.createElement('p');
+			textP.innerText = text ? text : 'Описание отсутствует';
 			
 			const container2 = document.createElement('div');
 			const imgEdit = document.createElement('img');
@@ -72,46 +73,47 @@ const render = () => {
 			const checkBox = document.createElement('input');
 			checkBox.type = 'checkbox';
 			checkBox.className = 'check';
-			checkBox.checked = item.isCheck;
+			checkBox.checked = isCheck;
 			checkBox.onchange = () => onChangeCheckbox(index);
 	
-			container2.className = item.isCheck ? 'edit del' : 'edit';
-			imgDel.className = item.isCheck ? 'delImg' : '';
-			imgEdit.className = item.isCheck ? 'delImg' : '';
-			text.className = item.isCheck ? 'text-task done-task' : 'text-task';
-			container.className = item.isCheck ? 'page done': 'page';
-			name.className = item.isCheck ? 'done-task' : '';
+			container2.className = isCheck ? 'edit del' : 'edit';
+			imgDel.className = isCheck ? 'delImg' : '';
+			imgEdit.className = isCheck ? 'delImg' : '';
+			textP.className = isCheck ? 'text-task done-task' : 'text-task';
+			container.className = isCheck ? 'page done': 'page';
+			nameh2.className = isCheck ? 'done-task' : '';
 			
 			container2.appendChild(imgEdit);
 			container2.appendChild(checkBox);
 			container2.appendChild(imgDel);
 
-			container.appendChild(name);
-			container.appendChild(text);
+			container.appendChild(nameh2);
+			container.appendChild(textP);
 			container.appendChild(container2);
 			content.appendChild(container);
 		} else if(item) {
+			const {name, text, isCheck, editor} = item;
 			const container = document.createElement('div');
 			container.id = `task-${index}`;
 			container.className = 'page';
 
 			const contEditName = document.createElement('div');
 			contEditName.className = 'editName';
-			const name = document.createElement('h2');
-			name.innerText = `${index+1}. `;
+			const nameh2 = document.createElement('h2');
+			nameh2.innerText = `${index+1}. `;
 			const editName = document.createElement('input');
 			editName.type = 'text';
 			editName.id = `name${index}`;
 			editName.className = 'sizeName';
-			editName.value = item.name;
-			contEditName.appendChild(name);
+			editName.value = name;
+			contEditName.appendChild(nameh2);
 			contEditName.appendChild(editName);
 
-			const text = document.createElement('input');
-			text.type = 'text';
-			text.id = `text${index}`;
-			text.className = 'editText';
-			text.value = item.text;
+			const textP = document.createElement('input');
+			textP.type = 'text';
+			textP.id = `text${index}`;
+			textP.className = 'editText';
+			textP.value = text;
 
 			const container2 = document.createElement('div');
 			container2.className = 'edit';
@@ -124,7 +126,7 @@ const render = () => {
 			container2.appendChild(imgOk);
 			container2.appendChild(imgClos);
 			container.appendChild(contEditName);
-			container.appendChild(text);
+			container.appendChild(textP);
 			container.appendChild(container2);
 			content.appendChild(container);
 		}
