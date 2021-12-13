@@ -13,10 +13,10 @@ window.onload = async () => {
     method: "GET",
   });
 
-  let result = await resp.json();
+  const result = await resp.json();
   allTasks = result.data;
 
-  for (let i in allTasks) {
+  f	or (let i in allTasks) {
     allTasks[i].editor = false;
   }
   render();
@@ -201,7 +201,6 @@ const changeName = (name) => {
 };
 
 const changeBD = async (index) => {
-  //const { nameObj, textObj, isCheckObj, idObj } = allTasks[index];
 	const { name, text, isCheck, id } = allTasks[index];
   const resp = await fetch("http://localhost:8000/updateTask", {
     method: "PATCH",
