@@ -20,7 +20,7 @@ const url =
   "mongodb+srv://user:user@cluster0.fiygj.mongodb.net/TestEducationDB?retryWrites=true&w=majority";
 mongoose.connect(url);
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.get("/allTasks", (req, res) => {
   Task.find().then((result) => {
