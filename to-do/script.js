@@ -75,9 +75,9 @@ const render = () => {
     content.removeChild(content.firstChild);
   }
 
-	allTasks = allTasks.sort((obj1, obj2) =>{
-		return obj2.isCheck - obj1.isCheck;
-	});
+  allTasks = allTasks.sort((obj1, obj2) => {
+    return obj2.isCheck - obj1.isCheck;
+  });
 
   allTasks.map((item, index) => {
     const { name, text, isCheck, id, editor } = item;
@@ -126,7 +126,7 @@ const render = () => {
       const contEditName = document.createElement("div");
       contEditName.className = "editName";
       const nameh2 = document.createElement("h2");
-      nameh2.innerText = 'Change:';
+      nameh2.innerText = "Change:";
       const editName = document.createElement("input");
       editName.type = "text";
       editName.id = `name${index}`;
@@ -201,7 +201,8 @@ const changeName = (name) => {
 };
 
 const changeBD = async (index) => {
-  const { nameObj, textObj, isCheckObj, idObj } = allTasks[index];
+  //const { nameObj, textObj, isCheckObj, idObj } = allTasks[index];
+	const { name, text, isCheck, id } = allTasks[index];
   const resp = await fetch("http://localhost:8000/updateTask", {
     method: "PATCH",
     headers: {
@@ -209,10 +210,10 @@ const changeBD = async (index) => {
       "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify({
-      name: nameObj,
-      text: textObj,
-      isCheck: isCheckObj,
-      id: idObj
+      nameObj,
+      textObj,
+      isCheckObj,
+      id,
     }),
   });
 };
