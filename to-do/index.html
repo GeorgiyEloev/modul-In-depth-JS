@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>TO-DO</title>
-    <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
-    <!-- <link href="//fonts.googleapis.com/css?family=Roboto%7COpen+Sans:200,300,400,700,800,900&amp;subset=latin" rel="preload" as="font"> -->
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div class="main">
-      <h1>To-Do List</h1>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="new-task">
-					<p>Задача:</p>
-					<input type="text" id="add-name">
-					<p>Описание:</p>
-					<input type="text" id="add-task">
-				</div>
-				<button onclick="onClickButton()">Add</button>
-				<button onclick="delAllTasks()">Delet All Tasks</button>
-    	</div>
-    </div>
-		<div id="content-page"></div>
-  </body>
+
+<head>
+	<title>TO-DO</title>
+	<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
+	<!-- <link href="//fonts.googleapis.com/css?family=Roboto%7COpen+Sans:200,300,400,700,800,900&amp;subset=latin" rel="preload" as="font"> -->
+	<link rel="stylesheet" href="style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="script.js"></script>
+</head>
+
+<body>
+	<div class="main">
+		<h1>To-Do List</h1>
+		<div class="newAdd">
+			<div class="new-task">
+				<p>Задача:</p>
+				<input type="text" id="add-name">
+				<p>Описание:</p>
+				<input type="text" id="add-task">
+			</div>
+			<button onclick="onClickButton()">Add</button>
+			<button onclick="delAllTasks()">Delet All Tasks</button>
+		</div>
+	</div>
+	<div id="content-page"></div>
+</body>
+
 </html>
