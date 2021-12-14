@@ -83,7 +83,7 @@ const render = () => {
   });
 
   allTasks.map((item, index) => {
-    const { _id, name, text, isCheck, _v, editor } = item;
+    const { _id, name, text, isCheck, value, editor } = item;
     if (!editor && item) {
       const container = document.createElement("div");
       container.id = `task-${index}`;
@@ -218,5 +218,4 @@ const changeBD = async (index) => {
       isCheck,
     }),
   });
-  console.log(resp);
 };
