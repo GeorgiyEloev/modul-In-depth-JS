@@ -22,8 +22,11 @@ window.onload = async () => {
   render();
 };
 
-const delAllTasks = () => {
+const delAllTasks = async () => {
   allTasks = [];
+  const resp = await fetch("http://localhost:8000/delAllTasks", {
+    method: "DELETE",
+  });
   inputText.value = "";
   inputName.value = "";
   render();
@@ -44,7 +47,7 @@ const onClickButton = async () => {
       }),
     });
 
-    let result = await resp.json();
+    const result = await resp.json();
     allTasks = result.data;
 
     for (let i in allTasks) {
@@ -76,11 +79,11 @@ const render = () => {
   }
 
   allTasks = allTasks.sort((obj1, obj2) => {
-    return obj2.isCheck - obj1.isCheck;
+    return obj1.isCheck - obj2.isCheck;
   });
 
   allTasks.map((item, index) => {
-    const { name, text, isCheck, id, editor } = item;
+    const { _id, name, text, isCheck, value, editor } = item;
     if (!editor && item) {
       const container = document.createElement("div");
       container.id = `task-${index}`;
@@ -96,7 +99,7 @@ const render = () => {
 
       const imgDel = document.createElement("img");
       imgDel.src = "delet.png";
-      imgDel.onclick = () => delTask(index, id);
+      imgDel.onclick = () => delTask(index, _id);
       const checkBox = document.createElement("input");
       checkBox.type = "checkbox";
       checkBox.className = "check";
@@ -167,7 +170,7 @@ const onChangeCheckbox = async (index) => {
 
 const delTask = async (index, id) => {
   delete allTasks[index];
-  const resp = await fetch(`http://localhost:8000/deleteTask?id=${id}`, {
+  const resp = await fetch(`http://localhost:8000/deleteTask?_id=${id}`, {
     method: "DELETE",
   });
   render();
@@ -201,7 +204,7 @@ const changeName = (name) => {
 };
 
 const changeBD = async (index) => {
-  const { name, text, isCheck, id } = allTasks[index];
+  const { _id, name, text, isCheck } = allTasks[index];
   const resp = await fetch("http://localhost:8000/updateTask", {
     method: "PATCH",
     headers: {
@@ -209,10 +212,10 @@ const changeBD = async (index) => {
       "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify({
-      nameObj,
-      textObj,
-      isCheckObj,
-      id,
+      _id,
+      name,
+      text,
+      isCheck,
     }),
   });
 };
