@@ -106,8 +106,7 @@ const render = () => {
       checkBox.checked = isCheck;
       checkBox.onchange = () => onChangeCheckbox(index);
 
-      container2.className = isCheck ? "edit del" : "edit";
-      imgDel.className = isCheck ? "delImg" : "";
+      container2.className = "edit";
       imgEdit.className = isCheck ? "delImg" : "";
       textP.className = isCheck ? "text-task done-task" : "text-task";
       container.className = isCheck ? "page done" : "page";
@@ -218,4 +217,12 @@ const changeBD = async (index) => {
       isCheck,
     }),
   });
+
+  const result = await resp.json();
+  allTasks = result.data;
+
+  for (let i in allTasks) {
+    allTasks[i].editor = false;
+  }
+  render();
 };
